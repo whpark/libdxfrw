@@ -1,4 +1,4 @@
-### WARNING: This project is a fork to add a cad2json
+### This project is a fork to add a cad2json
 ==========
 
 
