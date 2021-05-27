@@ -59,3 +59,7 @@ cmake-build-*
 out/
 CMakeSettings.json
 CppProperties.json
+x64/
+*.dwg
+*.dxf
+*.json

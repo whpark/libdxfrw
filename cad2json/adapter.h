@@ -10,7 +10,7 @@
 
 #define WRITE_MEMBER(member)        Write(#member, v.member)
 #define WRITE_MEMBER_ENUM(member)   Write(#member, (int)v.member)
-#define WRITE_MEMBER_ANGLE(member)  Write(#member, v.member/* *ARAD */)
+#define WRITE_MEMBER_ANGLE(member)  Write(#member, v.member *ARAD)
 
 using namespace std::literals;
 
@@ -48,30 +48,30 @@ inline std::basic_string_view<tchar_t> TrimLeft(std::basic_string_view<tchar_t> 
 //	return ar;
 //}
 
-template < typename Archive >
-Archive& operator << (Archive& ar, DRW_Vertex2D const& v) {
+//template < typename Archive >
+//Archive& operator << (Archive& ar, DRW_Vertex2D const& v) {
+//
+//	ar.WRITE_MEMBER(x);
+//	ar.WRITE_MEMBER(y);
+//	ar.WRITE_MEMBER(stawidth);
+//	ar.WRITE_MEMBER(endwidth);
+//	ar.WRITE_MEMBER(bulge);
+//
+//	return ar;
+//}
 
-	ar.WRITE_MEMBER(x);
-	ar.WRITE_MEMBER(y);
-	ar.WRITE_MEMBER(stawidth);
-	ar.WRITE_MEMBER(endwidth);
-	ar.WRITE_MEMBER(bulge);
-
-	return ar;
-}
-
-template < typename Archive >
-Archive& operator << (Archive& ar, DRW_Variant const& v) {
-
-	switch (v.type()) {
-	case DRW_Variant::STRING:   ar.Write("string"sv, *v.content.s); break;
-	case DRW_Variant::INTEGER:  ar.Write("integer"sv, v.content.i); break;
-	case DRW_Variant::DOUBLE:   ar.Write("double"sv, v.content.d); break;
-	case DRW_Variant::COORD:    ar.Write("coord"sv, *v.content.v); break;
-	}
-
-	return ar;
-}
+//template < typename Archive >
+//Archive& operator << (Archive& ar, DRW_Variant const& v) {
+//
+//	switch (v.type()) {
+//	case DRW_Variant::STRING:   ar.Write("string"sv, *v.content.s); break;
+//	case DRW_Variant::INTEGER:  ar.Write("integer"sv, v.content.i); break;
+//	case DRW_Variant::DOUBLE:   ar.Write("double"sv, v.content.d); break;
+//	case DRW_Variant::COORD:    ar.Write("coord"sv, *v.content.v); break;
+//	}
+//
+//	return ar;
+//}
 
 template < typename Archive >
 Archive& operator << (Archive& ar, DRW_Entity const& v) {
@@ -589,11 +589,11 @@ Archive& operator << (Archive& ar, DRW_Header const& v) {
 	return ar;
 }
 
-template < typename Archive >
-Archive& operator << (Archive& ar, std::pair<const std::string, DRW_Variant const*> const& v) {
-	ar.Write(v.first, *v.second);
-	return ar;
-}
+//template < typename Archive >
+//Archive& operator << (Archive& ar, std::pair<const std::string, DRW_Variant const*> const& v) {
+//	ar.Write(v.first, *v.second);
+//	return ar;
+//}
 
 template < typename Archive >
 Archive& operator << (Archive& ar, DRW_TableEntry const& v) {

@@ -88,7 +88,7 @@ namespace gtl::shape {
 
 	public:
 		oarchive_json(std::ostream& ostream) : ostream(ostream), nIndent{indent_width} {
-			auto str = fmt::format("\n{0:>{1}}", '{', std::max(1, nIndent-indent_width+1));
+			auto str = fmt::format("{0:>{1}}", '{', std::max(1, nIndent-indent_width+1));
 			ss << str;
 		}
 		oarchive_json(oarchive_json& B) : ostream(B.ss), nIndent(B.nIndent+indent_width) {
@@ -169,12 +169,42 @@ namespace gtl::shape {
 					break;
 				}
 			} else if constexpr (std::is_same_v<data_type, DRW_Coord>) {
-				static std::array<char, 128> buf;
-				DRW_Coord& coord = (DRW_Coord&)object;
+				DRW_Coord const& coord = object;
 				ss << "["sv;
 				ss << PrintNumber(coord.x) << ","sv;
 				ss << PrintNumber(coord.y) << ","sv;
 				ss << PrintNumber(coord.z) << "]"sv;
+			} else if constexpr (std::is_same_v<data_type, DRW_Vertex2D>) {
+				DRW_Vertex2D const& vertex = object;
+				ss << "["sv;
+				ss << PrintNumber(vertex.x) << ","sv;
+				ss << PrintNumber(vertex.y) << ","sv;
+				ss << PrintNumber(vertex.stawidth) << ","sv;
+				ss << PrintNumber(vertex.endwidth) << ","sv;
+				ss << PrintNumber(vertex.bulge) << "]"sv;
+			} else if constexpr (std::is_same_v<data_type, DRW_Variant>) {
+				DRW_Variant const& var = object;
+
+				//ss << "{"sv;
+				switch (var.type()) {
+				//case DRW_Variant::STRING:   ss << "\"string\":"sv << *var.content.s; break;
+				//case DRW_Variant::INTEGER:  ss << "\"integer\":"sv << var.content.i; break;
+				//case DRW_Variant::DOUBLE:   ss << "\"double\":"sv << var.content.d; break;
+				//case DRW_Variant::COORD:    ss << "\"coord\":"sv; WriteObject(*var.content.v); break;
+				case DRW_Variant::STRING:   WriteObject(*var.content.s); break;
+				case DRW_Variant::INTEGER:  WriteObject(var.content.i); break;
+				case DRW_Variant::DOUBLE:   WriteObject(var.content.d); break;
+				case DRW_Variant::COORD:    WriteObject(*var.content.v); break;
+				}
+				//ss << "}"sv;
+
+			} else if constexpr (std::is_same_v<data_type, std::pair<const std::string, DRW_Variant const*> >) {
+				std::pair<const std::string, DRW_Variant const*> const& pair = object;
+				auto str = fmt::format("\n{0:{1}}\"{2}\":", ' ', nIndent+indent_width, pair.first);
+				ss << str;
+
+				WriteObject<DRW_Variant>(*pair.second);
+
 			} else {
 				oarchive_json ar2(*this);
 				ar2 << object;
@@ -221,11 +251,13 @@ namespace gtl::shape {
 				auto const& v = *iter;
 				
 				if (bAddComma) { ss << ","; } else { bAddComma = true; }
+				if ((count+1)%4 == 0) {
+					auto str = fmt::format("\n{0:{1}}", ' ', nIndent);
+					ss << str;
+				}
 
 				WriteObject<T>(v);
 
-				if ((count+1)%8 == 0)
-					ss << "\n";
 			}
 
 			ss << "] ";
