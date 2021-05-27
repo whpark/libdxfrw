@@ -1,16 +1,20 @@
 // cad2json.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#include <filesystem>
+
 #include <iostream>
 #include <fstream>
 
 #include "converter.h"
 
-bool convertFile(std::string inName, std::string outName){
+bool convertFile(std::filesystem::path in, std::filesystem::path out){
+    std::filesystem::path p;
+
     bool badState = false;
     //verify if input file exist
     std::ifstream ifs;
-    ifs.open (inName.c_str(), std::ifstream::in);
+    ifs.open(in, std::ifstream::in);
     badState = ifs.fail();
     ifs.close();
     if (badState) {
@@ -18,7 +22,6 @@ bool convertFile(std::string inName, std::string outName){
         return false;
     }
 
-    std::ofstream ofs(outName, std::ios_base::binary);
     //gtl::shape::CShapeOStreamText ar(ofs);
 
     //All ok proceed whit conversion
@@ -28,36 +31,27 @@ bool convertFile(std::string inName, std::string outName){
 
     //boost::archive::text_oarchive ar;
 
-    badState = loader->fileImport( inName );
+    badState = loader->fileImport(in);
     if (!badState) {
         //std::cout << "Error reading file " << inName << std::endl;
         return false;
     }
 
+    std::ofstream ofs(out, std::ios_base::binary);
     gtl::shape::oarchive_json ar(ofs);
     loader->Export(ar);
-
-    //loader->fileExport(outName);
-
-    //loader->fileExportShape(outName);
-
-    ////And write a dxf file
-    //dx_iface *output = new dx_iface();
-    //badState = output->fileExport(outName, ver, binary, &fData);
-    //delete input;
-    //delete output;
 
     return badState;
 }
 
-int main(int argc, char *argv[]) {
+int wmain(int argc, wchar_t *argv[]) {
     if (argc < 3) {
         return 1;
     }
 
     //parse params.
-    std::string fileName = argv[1];
-    std::string outName = argv[2];
+    std::wstring fileName = argv[1];
+    std::wstring outName = argv[2];
 
     bool ok = convertFile(fileName, outName);
     if (ok)

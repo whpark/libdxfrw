@@ -32,7 +32,7 @@
     secObjects
 };*/
 
-dxfRW::dxfRW(const char* name){
+dxfRW::dxfRW(std::filesystem::path name){
     DRW_DBGSL(DRW_dbg::NONE);
     fileName = name;
     reader = NULL;
@@ -69,7 +69,7 @@ bool dxfRW::read(DRW_Interface *interface_, bool ext){
     if ( interface_ == NULL )
                 return isOk;
     DRW_DBG("dxfRW::read 1def\n");
-    filestr.open (fileName.c_str(), std::ios_base::in | std::ios::binary);
+    filestr.open (fileName, std::ios_base::in | std::ios::binary);
     if (!filestr.is_open())
         return isOk;
     if (!filestr.good())
@@ -84,7 +84,7 @@ bool dxfRW::read(DRW_Interface *interface_, bool ext){
     iface = interface_;
     DRW_DBG("dxfRW::read 2\n");
     if (strcmp(line, line2) == 0) {
-        filestr.open (fileName.c_str(), std::ios_base::in | std::ios::binary);
+        filestr.open (fileName, std::ios_base::in | std::ios::binary);
         binFile = true;
         //skip sentinel
         filestr.seekg (22, std::ios::beg);
@@ -92,7 +92,7 @@ bool dxfRW::read(DRW_Interface *interface_, bool ext){
         DRW_DBG("dxfRW::read binary file\n");
     } else {
         binFile = false;
-        filestr.open (fileName.c_str(), std::ios_base::in);
+        filestr.open (fileName, std::ios_base::in);
         reader = new dxfReaderAscii(&filestr);
     }
 
@@ -111,13 +111,13 @@ bool dxfRW::write(DRW_Interface *interface_, DRW::Version ver, bool bin){
     binFile = bin;
     iface = interface_;
     if (binFile) {
-        filestr.open (fileName.c_str(), std::ios_base::out | std::ios::binary | std::ios::trunc);
+        filestr.open (fileName, std::ios_base::out | std::ios::binary | std::ios::trunc);
         //write sentinel
         filestr << "AutoCAD Binary DXF\r\n" << (char)26 << '\0';
         writer = new dxfWriterBinary(&filestr);
         DRW_DBG("dxfRW::read binary file\n");
     } else {
-        filestr.open (fileName.c_str(), std::ios_base::out | std::ios::trunc);
+        filestr.open (fileName, std::ios_base::out | std::ios::trunc);
         writer = new dxfWriterAscii(&filestr);
         std::string comm = std::string("dxfrw ") + std::string(DRW_VERSION);
         writer->writeString(999, comm);

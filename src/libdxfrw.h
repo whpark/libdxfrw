@@ -14,6 +14,7 @@
 #define LIBDXFRW_H
 
 #include <string>
+#include <filesystem>
 #include "drw_entities.h"
 #include "drw_objects.h"
 #include "drw_header.h"
@@ -25,7 +26,7 @@ class dxfWriter;
 
 class dxfRW {
 public:
-    dxfRW(const char* name);
+    dxfRW(std::filesystem::path path);
     ~dxfRW();
     void setDebug(DRW::DBG_LEVEL lvl);
     /// reads the file specified in constructor
@@ -126,7 +127,7 @@ private:
 
 private:
     DRW::Version version;
-    std::string fileName;
+    std::filesystem::path fileName;
     std::string codePage;
     bool binFile;
     dxfReader *reader;

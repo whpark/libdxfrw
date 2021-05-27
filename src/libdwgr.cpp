@@ -10,7 +10,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.    **
 ******************************************************************************/
 
-
 #include "libdwgr.h"
 #include <fstream>
 #include <algorithm>
@@ -35,7 +34,7 @@
     secObjects
 };*/
 
-dwgR::dwgR(const char* name){
+dwgR::dwgR(std::filesystem::path name){
     DRW_DBGSL(DRW_dbg::NONE);
     fileName = name;
     reader = NULL;
@@ -88,7 +87,7 @@ bool dwgR::testReader(){
     bool isOk = false;
 
     std::ifstream filestr;
-    filestr.open (fileName.c_str(), std::ios_base::in | std::ios::binary);
+    filestr.open (fileName, std::ios_base::in | std::ios::binary);
     if (!filestr.is_open() || !filestr.good() ){
         error = DRW::BAD_OPEN;
         return isOk;
@@ -179,7 +178,7 @@ bool dwgR::read(DRW_Interface *interface_, bool ext){
 bool dwgR::openFile(std::ifstream *filestr){
     bool isOk = false;
     DRW_DBG("dwgR::read 1\n");
-    filestr->open (fileName.c_str(), std::ios_base::in | std::ios::binary);
+    filestr->open (fileName, std::ios_base::in | std::ios::binary);
     if (!filestr->is_open() || !filestr->good() ){
         error = DRW::BAD_OPEN;
         return isOk;

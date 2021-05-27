@@ -17,13 +17,13 @@ using namespace std::literals;
 
 template < typename tchar_t >
 inline std::basic_string<tchar_t> MakeUpper(std::basic_string_view<tchar_t> sv) {
-	std::string str(sv.size(), {});
+	std::basic_string<tchar_t> str(sv.size(), {});
 	std::transform(sv.begin(), sv.end(), str.begin(), ::toupper);
 	return str;
 };
 template < typename tchar_t >
 inline std::basic_string<tchar_t> MakeLower(std::basic_string_view<tchar_t> sv) {
-	std::string str(sv.size());
+	std::basic_string<tchar_t> str(sv.size(), {});
 	std::transform(sv.begin(), sv.end(), str.begin(), ::tolower);
 	return str;
 };
