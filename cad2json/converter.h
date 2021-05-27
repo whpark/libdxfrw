@@ -284,23 +284,21 @@ namespace gtl::shape {
 
 	public:
 
-		bool fileImport(const std::string& fileI) {
-			unsigned int found = fileI.find_last_of(".");
-			std::string fileExt = fileI.substr(found+1);
-			std::transform(fileExt.begin(), fileExt.end(), fileExt.begin(), ::toupper);
+		bool fileImport(std::filesystem::path fileI) {
+			auto ext = MakeLower<wchar_t>(fileI.extension().wstring());
 			currentBlock = &mainBlock;
 
-			if (fileExt == "DXF") {
+			if (ext == L".dxf") {
 				//loads dxf
-				auto dxf = std::make_unique<dxfRW>(fileI.c_str());
+				auto dxf = std::make_unique<dxfRW>(fileI);
 				bool success = dxf->read(this, false);
-				//delete dxf;
+
 				return success;
-			} else if (fileExt == "DWG") {
+			} else if (ext == L".dwg") {
 				//loads dwg
-				auto dwg = std::make_unique<dwgR>(fileI.c_str());
+				auto dwg = std::make_unique<dwgR>(fileI);
 				bool success = dwg->read(this, false);
-				//delete dwg;
+
 				return success;
 			}
 

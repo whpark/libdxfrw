@@ -16,6 +16,7 @@
 #include <string>
 #include <memory>
 #include <unordered_map>
+#include <filesystem>
 //#include <deque>
 #include "drw_entities.h"
 #include "drw_objects.h"
@@ -26,7 +27,7 @@ class dwgReader;
 
 class dwgR {
 public:
-    explicit dwgR(const char* name);
+    dwgR(std::filesystem::path const& name);    // PWH. (const char* -> std::filesystem::path const&)
     ~dwgR();
     //read: return true if all ok
     bool read(DRW_Interface *interface_, bool ext);
@@ -44,7 +45,7 @@ private:
 private:
     DRW::Version version { DRW::UNKNOWNV };
     DRW::error error { DRW::BAD_NONE };
-    std::string fileName;
+    std::filesystem::path fileName;
     bool applyExt { false }; /*apply extrusion in entities to conv in 2D?*/
     std::string codePage;
     DRW_Interface *iface { nullptr };
