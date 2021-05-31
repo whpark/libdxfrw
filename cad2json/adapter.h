@@ -589,11 +589,12 @@ Archive& operator << (Archive& ar, DRW_Header const& v) {
 	return ar;
 }
 
-//template < typename Archive >
-//Archive& operator << (Archive& ar, std::pair<const std::string, DRW_Variant const*> const& v) {
-//	ar.Write(v.first, *v.second);
-//	return ar;
-//}
+template < typename Archive >
+Archive& operator << (Archive& ar, std::pair<const std::string, DRW_Variant const*> const& v) {
+	if (v.second->type() != DRW_Variant::INVALID)
+		ar.Write(v.first, *v.second);
+	return ar;
+}
 
 template < typename Archive >
 Archive& operator << (Archive& ar, DRW_TableEntry const& v) {
