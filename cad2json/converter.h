@@ -195,15 +195,16 @@ namespace gtl::shape {
 				case DRW_Variant::INTEGER:  WriteObject(var.content.i); break;
 				case DRW_Variant::DOUBLE:   WriteObject(var.content.d); break;
 				case DRW_Variant::COORD:    WriteObject(*var.content.v); break;
+				case DRW_Variant::INVALID:	WriteObject(""s); break;
 				}
 				//ss << "}"sv;
 
-			} else if constexpr (std::is_same_v<data_type, std::pair<const std::string, DRW_Variant const*> >) {
-				std::pair<const std::string, DRW_Variant const*> const& pair = object;
-				auto str = fmt::format("\n{0:{1}}\"{2}\":", ' ', nIndent+indent_width, pair.first);
-				ss << str;
+			//} else if constexpr (std::is_same_v<data_type, std::pair<const std::string, DRW_Variant const*> >) {
+			//	std::pair<const std::string, DRW_Variant const*> const& pair = object;
+			//	auto str = fmt::format("\n{0:{1}}\"{2}\":", ' ', nIndent+indent_width, pair.first);
+			//	ss << str;
 
-				WriteObject<DRW_Variant>(*pair.second);
+			//	WriteObject<DRW_Variant>(*pair.second);
 
 			} else {
 				oarchive_json ar2(*this);
