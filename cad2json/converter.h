@@ -120,7 +120,7 @@ namespace gtl::shape {
 			auto PrintNumber = [&buf] < typename T >(T value) -> std::string {
 				std::to_chars_result result;
 				if constexpr (std::is_floating_point_v<T>) {
-					 result = std::to_chars(buf.data(), buf.data()+buf.size(), value, std::chars_format::general);
+					 result = std::to_chars(buf.data(), buf.data()+buf.size(), value, std::chars_format::scientific);
 				} else if constexpr (std::is_same_v<T, bool>) {
 					return value ? "true"s : "false"s;
 				} else {
@@ -167,6 +167,7 @@ namespace gtl::shape {
 				case DRW::HATCH:		ar2 << (DRW_Hatch&)(object); break;
 				case DRW::IMAGE:		ar2 << (DRW_ImagePath&)(object); break;
 				case DRW::BLOCK:		ar2 << (DRW_Entities&)(object); break;
+				case DRW::VIEWPORT:		ar2 << (DRW_Viewport&)(object); break;
 				case DRW::UNKNOWN :
 					break;
 				}
@@ -341,7 +342,7 @@ namespace gtl::shape {
 			ar.WriteContainer<DRW_AppId>("appIds"sv, appIds);
 			ar.WriteContainer<DRW_Entities>("blocks"sv, blocks);
 			ar.WriteContainer<DRW_ImagePath>("images"sv, images);
-			ar.Write("mainBlock"sv, mainBlock);
+			ar.WriteContainer<DRW_Entity>("mainBlock"sv, mainBlock.entities.begin(), mainBlock.entities.end());
 
 			return true;
 		}
