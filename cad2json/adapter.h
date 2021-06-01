@@ -377,7 +377,7 @@ Archive& operator << (Archive& ar, DRW_Spline const& v) {
 	ar.WRITE_MEMBER(degree);
 	//ar.WRITE_MEMBER(nknots);
 	//ar.WRITE_MEMBER(ncontrol);
-	ar.WRITE_MEMBER(nfit);
+	//ar.WRITE_MEMBER(nfit);
 	ar.WRITE_MEMBER(tolknot);
 	ar.WRITE_MEMBER(tolcontrol);
 	ar.WRITE_MEMBER(tolfit);
@@ -387,7 +387,7 @@ Archive& operator << (Archive& ar, DRW_Spline const& v) {
 	using double_t = double;	// why?????
 	ar.WriteContainer<double_t>("knotslist"sv, v.knotslist.begin(), v.knotslist.end());
 	ar.WriteContainer<DRW_Coord>("controllist"sv, v.controllist.begin(), v.controllist.end());
-	//ar.WriteContainer<DRW_Coord>("fitlist"sv, v.fitlist.begin(), v.fitlist.end());
+	ar.WriteContainer<DRW_Coord>("fitlist"sv, v.fitlist.begin(), v.fitlist.end());
 
 	return ar;
 }
@@ -416,7 +416,7 @@ Archive& operator << (Archive& ar, DRW_Hatch const& v) {
 	ar.WRITE_MEMBER(hstyle);
 	ar.WRITE_MEMBER(hpattern);
 	ar.WRITE_MEMBER(doubleflag);
-	//ar.WRITE_MEMBER(loopsnum);
+	ar.WRITE_MEMBER(loopsnum);
 	ar.WRITE_MEMBER(angle);
 	ar.WRITE_MEMBER(scale);
 	ar.WRITE_MEMBER(deflines);
@@ -585,16 +585,18 @@ Archive& operator << (Archive& ar, DRW_Viewport const& v) {
 
 template < typename Archive >
 Archive& operator << (Archive& ar, DRW_Header const& v) {
-	ar.WriteContainer<std::pair<const std::string, DRW_Variant const*>>("var"sv, v.vars.begin(), v.vars.end());
+	//ar.WriteContainer<std::pair<const std::string, DRW_Variant const*>>("var"sv, v.vars.begin(), v.vars.end());
+	ar.WRITE_MEMBER(vars);
+
 	return ar;
 }
 
-template < typename Archive >
-Archive& operator << (Archive& ar, std::pair<const std::string, DRW_Variant const*> const& v) {
-	if (v.second->type() != DRW_Variant::INVALID)
-		ar.Write(v.first, *v.second);
-	return ar;
-}
+//template < typename Archive >
+//Archive& operator << (Archive& ar, std::pair<const std::string, DRW_Variant const*> const& v) {
+//	if (v.second->type() != DRW_Variant::INVALID)
+//		ar.Write(v.first, *v.second);
+//	return ar;
+//}
 
 template < typename Archive >
 Archive& operator << (Archive& ar, DRW_TableEntry const& v) {

@@ -136,10 +136,12 @@ namespace gtl::shape {
 
 			if constexpr (std::is_same_v<data_type, std::string> or std::is_same_v<data_type, std::string_view>) {
 				ss << "\"" << object << "\"";
-			} else if constexpr (std::is_arithmetic_v<data_type>) {
+			}
+			else if constexpr (std::is_arithmetic_v<data_type>) {
 				auto str = PrintNumber(object);
 				ss << str;
-			} else if constexpr (std::derived_from<data_type, DRW_Entity>) {
+			}
+			else if constexpr (std::derived_from<data_type, DRW_Entity>) {
 				oarchive_json ar2(*this);
 				switch (object.eType) {
 				case DRW::POINT:		ar2 << (DRW_Point&)(object); break;
@@ -168,13 +170,15 @@ namespace gtl::shape {
 				case DRW::UNKNOWN :
 					break;
 				}
-			} else if constexpr (std::is_same_v<data_type, DRW_Coord>) {
+			}
+			else if constexpr (std::is_same_v<data_type, DRW_Coord>) {
 				DRW_Coord const& coord = object;
 				ss << "["sv;
 				ss << PrintNumber(coord.x) << ","sv;
 				ss << PrintNumber(coord.y) << ","sv;
 				ss << PrintNumber(coord.z) << "]"sv;
-			} else if constexpr (std::is_same_v<data_type, DRW_Vertex2D>) {
+			}
+			else if constexpr (std::is_same_v<data_type, DRW_Vertex2D>) {
 				DRW_Vertex2D const& vertex = object;
 				ss << "["sv;
 				ss << PrintNumber(vertex.x) << ","sv;
@@ -182,7 +186,8 @@ namespace gtl::shape {
 				ss << PrintNumber(vertex.stawidth) << ","sv;
 				ss << PrintNumber(vertex.endwidth) << ","sv;
 				ss << PrintNumber(vertex.bulge) << "]"sv;
-			} else if constexpr (std::is_same_v<data_type, DRW_Variant>) {
+			}
+			else if constexpr (std::is_same_v<data_type, DRW_Variant>) {
 				DRW_Variant const& var = object;
 
 				//ss << "{"sv;
@@ -199,14 +204,29 @@ namespace gtl::shape {
 				}
 				//ss << "}"sv;
 
-			//} else if constexpr (std::is_same_v<data_type, std::pair<const std::string, DRW_Variant const*> >) {
+			}
+			else if constexpr (std::is_same_v<data_type, std::map<std::string, DRW_Variant*> >) {
+				oarchive_json ar2(*this);
+
+				bool bAddComma{false};
+				for (auto const& [key, var] : object) {
+					if (bAddComma) { ar2.ss << ","; } else { bAddComma = true; }
+					auto str = fmt::format("\n{0:{1}}\"{2}\":", ' ', nIndent+indent_width, key);
+					ar2.ss << str;
+
+					ar2.WriteObject<DRW_Variant>(*var);
+				}
+
+			}
+			//else if constexpr (std::is_same_v<data_type, std::pair<const std::string, DRW_Variant const*> >) {
 			//	std::pair<const std::string, DRW_Variant const*> const& pair = object;
 			//	auto str = fmt::format("\n{0:{1}}\"{2}\":", ' ', nIndent+indent_width, pair.first);
 			//	ss << str;
 
 			//	WriteObject<DRW_Variant>(*pair.second);
 
-			} else {
+			//}
+			else {
 				oarchive_json ar2(*this);
 				ar2 << object;
 			}
