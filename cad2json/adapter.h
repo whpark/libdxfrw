@@ -135,17 +135,17 @@ Archive& operator << (Archive& ar, DRW_Entity const& v) {
 		ar.WRITE_MEMBER(color24);
 	ar.WRITE_MEMBER_ENUM(lWeight);
 
-	//ar.WRITE_MEMBER(ltypeScale);
-	//ar.WRITE_MEMBER(visible);
-	//ar.WRITE_MEMBER(numProxyGraph);
-	//ar.WRITE_MEMBER(proxyGraphics);
-	//ar.WRITE_MEMBER(colorName);
-	//ar.WRITE_MEMBER(transparency);
-	//ar.WRITE_MEMBER(plotStyle);
-	//ar.WRITE_MEMBER_ENUM(shadow);
+	ar.WRITE_MEMBER(ltypeScale);
+	ar.WRITE_MEMBER(visible);
+	ar.WRITE_MEMBER(numProxyGraph);
+	ar.WRITE_MEMBER(proxyGraphics);
+	ar.WRITE_MEMBER(colorName);
+	ar.WRITE_MEMBER(transparency);
+	ar.WRITE_MEMBER(plotStyle);
+	ar.WRITE_MEMBER_ENUM(shadow);
 	
 	// todo : check
-	//ar.WRITE_MEMBER(haveExtrusion);
+	ar.WRITE_MEMBER(haveExtrusion);
 
 	if (v.extData.size())
 		ar.WriteContainer<DRW_Variant>("extData"sv, v.extData.begin(), v.extData.end());
@@ -158,8 +158,8 @@ Archive& operator << (Archive& ar, DRW_Point const& v) {
 	ar << (DRW_Entity const&)v;
 
 	ar.WRITE_MEMBER(basePoint);
-	//ar.WRITE_MEMBER(thickness);
-	//ar.WRITE_MEMBER(extPoint);
+	ar.WRITE_MEMBER(thickness);
+	ar.WRITE_MEMBER(extPoint);
 
 	return ar;
 }
