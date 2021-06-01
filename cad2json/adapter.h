@@ -707,8 +707,8 @@ Archive& operator << (Archive& ar, DRW_LType const& v) {
 		return ar;
 	}
 
-	ar.WRITE_MEMBER(name);
-	ar.WRITE_MEMBER(flags);
+	//ar.WRITE_MEMBER(name);
+	//ar.WRITE_MEMBER(flags);
 	ar.WRITE_MEMBER(desc);
 	ar.WriteContainer<double_t>("path"sv, v.path.begin(), v.path.end());
 
