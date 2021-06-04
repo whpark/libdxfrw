@@ -32,10 +32,11 @@ bool convertFile(std::filesystem::path in, std::filesystem::path out){
     //boost::archive::text_oarchive ar;
 
     badState = loader->fileImport(in);
-    if (!badState) {
-        //std::cout << "Error reading file " << inName << std::endl;
-        return false;
-    }
+    // ignore.
+    //if (!badState) {
+    //    //std::cout << "Error reading file " << inName << std::endl;
+    //    return false;
+    //}
 
     std::ofstream ofs(out, std::ios_base::binary);
     gtl::shape::oarchive_json ar(ofs);
