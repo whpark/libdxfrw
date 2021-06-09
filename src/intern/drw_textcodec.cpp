@@ -48,7 +48,9 @@ void DRW_TextCodec::setVersion(std::string *v, bool dxfFormat){
              || versionStr == "AC1015" || versionStr == "AC1018") {
         setVersion(DRW::AC1015, dxfFormat);
     }
-    setVersion(DRW::AC1021, dxfFormat);
+    else {  // PWH.
+        setVersion(DRW::AC1021, dxfFormat);
+    }
 }
 
 void DRW_TextCodec::setCodePage(std::string *c, bool dxfFormat){
