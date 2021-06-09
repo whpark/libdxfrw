@@ -135,7 +135,18 @@ namespace gtl::shape {
 			};
 
 			if constexpr (std::is_same_v<data_type, std::string> or std::is_same_v<data_type, std::string_view>) {
-				ss << "\"" << object << "\"";
+				if (object.find('\\') == object.npos) {
+					ss << "\"" << object << "\"";
+				} else {
+					std::string str;
+					str.reserve(object.size()+2);
+					for (auto c : object) {
+						str += c;
+						if (c == '\\')
+							str += c;	// one more.
+					}
+					ss << "\"" << str << "\"";
+				}
 			}
 			else if constexpr (std::is_arithmetic_v<data_type>) {
 				auto str = PrintNumber(object);
