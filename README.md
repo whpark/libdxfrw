@@ -1,4 +1,8 @@
-libdxfrw ![Build status](https://api.travis-ci.org/LibreCAD/libdxfrw.svg?branch=master)
+### WARNING: This project is a fork to add a cad2json
+==========
+
+
+libdxfrw 
 ==========
 
 libdxfrw is a free C++ library to read and write DXF files in both formats, ascii and binary form.
