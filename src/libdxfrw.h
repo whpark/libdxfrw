@@ -28,7 +28,7 @@ class dxfWriter;
 
 class dxfRW {
 public:
-    dxfRW(std::filesystem::path path);
+    dxfRW(std::filesystem::path const& path);
     ~dxfRW();
     void setDebug(DRW::DebugLevel lvl);
     /// reads the file specified in constructor

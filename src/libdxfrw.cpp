@@ -72,10 +72,10 @@ bool dxfRW::read(DRW_Interface *interface_, bool ext){
     }
     DRW_DBG("dxfRW::read 1def\n");
     filestr.open (fileName, std::ios_base::in | std::ios::binary);
-    if (!filestr.is_open())
-        return isOk;
-    if (!filestr.good())
-        return isOk;
+    if (!filestr.is_open()
+        || !filestr.good()) {
+        return setError(DRW::BAD_OPEN);
+    }
 
     char line[22];
     char line2[22] = "AutoCAD Binary DXF\r\n";
