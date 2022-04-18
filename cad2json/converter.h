@@ -135,12 +135,14 @@ namespace gtl::shape {
 			};
 
 			if constexpr (std::is_same_v<data_type, std::string> or std::is_same_v<data_type, std::string_view>) {
-				if (object.find('\\') == object.npos) {
+				if (object.find_first_of("\"\\"s) == object.npos) {
 					ss << "\"" << object << "\"";
 				} else {
 					std::string str;
 					str.reserve(object.size()+2);
 					for (auto c : object) {
+						if (c == '\"')
+							str += '\\';
 						str += c;
 						if (c == '\\')
 							str += c;	// one more.
