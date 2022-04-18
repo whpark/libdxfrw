@@ -219,7 +219,9 @@ namespace gtl::shape {
 				//ss << "}"sv;
 
 			}
-			else if constexpr (std::is_same_v<data_type, std::map<std::string, DRW_Variant*> >) {
+			else if constexpr (std::is_same_v<data_type, std::map<std::string, DRW_Variant*>>
+				|| std::is_same_v<data_type, std::unordered_map<std::string, DRW_Variant*>>)
+			{
 				oarchive_json ar2(*this);
 
 				bool bAddComma{false};
@@ -495,7 +497,8 @@ namespace gtl::shape {
 		}
 
 		//writer part, send all in class dx_data to writer
-		virtual void addComment(const char* /*comment*/) {}
+		virtual void addComment(const char* /*comment*/) override {}
+		virtual void addPlotSettings(const DRW_PlotSettings *data) override {}
 
 		virtual void writeHeader(DRW_Header& data) override {};
 		virtual void writeBlocks() override {};
@@ -506,6 +509,7 @@ namespace gtl::shape {
 		virtual void writeTextstyles() override {};
 		virtual void writeVports() override {};
 		virtual void writeDimstyles() override {};
+		virtual void writeObjects() override {};
 		virtual void writeAppId() override {};
 
 	};
