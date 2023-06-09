@@ -19,11 +19,15 @@ http://sourceforge.net/projects/libdxfrw
 
 
 Please note:
-==========
+----------
 When you clone or download this project to build [LibreCAD_3](https://github.com/LibreCAD/LibreCAD_3) use the branch **LibreCAD_3**. The master or other branches may have incompatible interface definitions which are not yet implemented in LibreCAD_3!
 
 Building and installing the library
 ==========
+
+Debug version
+----------
+
 ```
 mkdir build
 cd build
@@ -32,8 +36,8 @@ make
 sudo make install
 ```
 
-For non-debug version:
-==========
+Non-debug version
+----------
 
 ```
 mkdir release
@@ -43,7 +47,8 @@ make
 sudo make install
 ```
 
-== UBUNTU/Mint Folks ==
+Ubuntu/Mint Folks
+----------
 
 ```
 mkdir release
@@ -54,6 +59,7 @@ sudo make install
 ```
 
 
-== Example usage of the library ==
+Example usage of the library
+==========
 
 See how we use it in LibreCAD V3 : https://github.com/LibreCAD/LibreCAD_3/tree/master/persistence/libdxfrw
